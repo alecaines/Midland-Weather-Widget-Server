@@ -1,12 +1,14 @@
 const express = require('express');
 const fetch = require("node-fetch");
 const cors = require('cors');
+const path = require('path');
 var request = require('request');
 var http = require('http');
 
 const app = express();
 app.use(cors());
 app.options('*',cors());
+app.use(express.static(path.join(__dirname, 'build')));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
@@ -50,5 +52,7 @@ app.get('/api/sioux-falls', async (req, res) => {
       .catch((err) => res.send(err));	
 });
 
-
+app.get('*', (req, res) =>{
+    res.redirect('/');
+});
 app.listen(port, () => console.log("Served at the port "+port));
